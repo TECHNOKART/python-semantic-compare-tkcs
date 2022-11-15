@@ -11,21 +11,21 @@ class SemanticComparator:
         # merge tokens for entities
         if merge_entities:
             merge_ents = self.nlp.create_pipe("merge_entities")
-            self.nlp.add_pipe(merge_ents)
+            self.nlp.add_pipe("merge_entities")
         # merge tockes for noun chunks
         merge_nps = self.nlp.create_pipe("merge_noun_chunks")
-        self.nlp.add_pipe(merge_nps)
+        self.nlp.add_pipe("merge_noun_chunks")
         # split by sents
         if sentencizer:
             split_by_sents = self.nlp.create_pipe('sentencizer')
-            self.nlp.add_pipe(split_by_sents, before='parser')
+            self.nlp.add_pipe("sentencizer", before='parser')
 
         self.semantic_model = None
 
     def split_by_sents(self, doc, spacy_model='en_core_web_lg'):
         nlp = spacy.load(spacy_model)
         split_by_sents = nlp.create_pipe('sentencizer')    
-        nlp.add_pipe(split_by_sents, before='parser')
+        nlp.add_pipe("sentencizer", before='parser')
         return nlp(doc)
 
     def add_custom_pipe(self, custom_pipe, *args, **kwargs):
